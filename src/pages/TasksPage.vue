@@ -1,20 +1,21 @@
-
-
 <template>
+    <!-- Main template -->
     <main style="min-height: 50vh; margin-top: 2rem;">
         <div class="container">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
                     <!-- Add new Task -->
                     <div class="relative">
+                        <!-- Input for adding new task -->
                         <input type="text" class="form-control form-control-lg padding-right-lg"
                             placeholder="+ Add new task. Press enter to save." />
                     </div>
                     <!-- List of incomplete tasks -->
                     <Tasks :tasks="uncompletedTaks" />
 
-                    <!-- show toggle button -->
+                    <!-- Show toggle button for completed tasks -->
                     <div class="text-center my-3" v-show="showToggleCompletedBtn">
+                        <!-- Button to toggle visibility of completed tasks -->
                         <button class="btn btn-sm btn-secondary" @click="$event => showCompletedTasks = !showCompletedTasks">
                             <span v-if="!showCompletedTasks">Show Completed Tasks</span>
                             <span v-else>Hide Completed Tasks</span>
@@ -30,27 +31,33 @@
     </main>
 </template>
 
-
 <script setup>
+    // Import necessary functions from Vue
+    import { computed, onMounted, ref } from "vue";
+    // Import the task API and the Tasks component
+    import { allTasks } from '@/http/task-api';
+    import Tasks from "../components/tasks/Tasks.vue"
 
-import { computed, onMounted, ref } from "vue";
-import { allTasks } from '@/http/task-api';
-import Tasks from "../components/tasks/Tasks.vue"
+    // Define a reactive variable for storing tasks
+    const tasks = ref([])
 
-const tasks = ref([])
+    // Fetch all tasks when the component is mounted
+    onMounted ( async () => {
+        const { data } = await allTasks();
+        tasks.value = data.data
+    })
 
-onMounted ( async () => {
-    const { data } = await allTasks();
-    tasks.value = data.data
-})
+    // Compute uncompleted tasks by filtering tasks where is_completed is false
+    const uncompletedTaks = computed(() => tasks.value.filter(task => !task.is_completed))
+    // Compute completed tasks by filtering tasks where is_completed is true
+    const completedTasks = computed(() => tasks.value.filter(task => task.is_completed))
 
-const uncompletedTaks = computed(() => tasks.value.filter(task => !task.is_completed))
-const completedTasks = computed(() => tasks.value.filter(task => task.is_completed))
+    // Compute whether to show the toggle button based on the existence of both completed and uncompleted tasks
+    const showToggleCompletedBtn = computed(() => uncompletedTaks.value.length > 0 && completedTasks.value.length > 0)
 
+    // Compute whether completed tasks should be visible based on the presence of uncompleted tasks or completed tasks
+    const completedTasksIsVisible = computed(() => uncompletedTaks.value.length === 0 || completedTasks.value.length > 0)
 
-const showToggleCompletedBtn = computed(() => uncompletedTaks.value.length > 0 && completedTasks.value.length > 0)
-
-const completedTasksIsVisible = computed(() => uncompletedTaks.value.length === 0 || completedTasks.value.length > 0)
-
-const showCompletedTasks = ref(false)
+    // Define a reactive variable for controlling the visibility of completed tasks
+    const showCompletedTasks = ref(false)
 </script>
