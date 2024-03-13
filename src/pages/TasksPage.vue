@@ -5,11 +5,7 @@
             <div class="row">
                 <div class="col-md-8 offset-md-2">
                     <!-- Add new Task -->
-                    <div class="relative">
-                        <!-- Input for adding new task -->
-                        <input type="text" class="form-control form-control-lg padding-right-lg"
-                            placeholder="+ Add new task. Press enter to save." />
-                    </div>
+                    <NewTask @added="handleAddedTask" />
                     <!-- List of incomplete tasks -->
                     <Tasks :tasks="uncompletedTaks" />
 
@@ -35,8 +31,9 @@
     // Import necessary functions from Vue
     import { computed, onMounted, ref } from "vue";
     // Import the task API and the Tasks component
-    import { allTasks } from '@/http/task-api';
+    import { allTasks, createTask } from '@/http/task-api';
     import Tasks from "../components/tasks/Tasks.vue"
+    import NewTask from "../components/tasks/NewTask.vue"
 
     // Define a reactive variable for storing tasks
     const tasks = ref([])
@@ -60,4 +57,11 @@
 
     // Define a reactive variable for controlling the visibility of completed tasks
     const showCompletedTasks = ref(false)
+
+
+    const handleAddedTask = async (newTask) => {
+        const {data: createdTask} = await createTask(newTask)
+
+        tasks.value.unshift(createdTask.data)
+    }
 </script>
