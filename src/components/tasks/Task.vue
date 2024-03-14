@@ -29,10 +29,14 @@
             </div>
 
             <!-- Display task date -->
-            <div class="task-date">24 Feb 12:00</div>
+            <div class="task-date">{{ task.updated_at }}</div>
         </div>
 
-        <TaskActions @edit="$event =>  isEdit = true" v-show="!isEdit"/>
+        <TaskActions 
+            @edit="$event =>  isEdit = true" 
+            v-show="!isEdit"
+            @remove="removeTask"
+        />
     </li>
 </template>
 
@@ -46,10 +50,7 @@
         task: Object
     })
 
-    const emit = defineEmits([
-        "updated",
-        "completed"
-    ])
+    const emit = defineEmits([ "updated", "completed", "removed" ])
 
     const isEdit = ref(false)
     const editingTask = ref(props.task.name)
@@ -83,4 +84,10 @@
         emit('completed', updatedTask)
     }
 
+
+    const removeTask = event => {
+        if(confirm('Are you sure?')) {
+            emit('removed' , props.task)
+        }
+    }
 </script>
