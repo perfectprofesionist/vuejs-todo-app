@@ -83,6 +83,8 @@
         const currentTask = tasks.value.find(item => item.id === task.id)
         currentTask.name = updatedTask.data.name
         currentTask.updated_at = updatedTask.data.updated_at
+        currentTask.created_at = updatedTask.data.created_at
+        
     }
 
 

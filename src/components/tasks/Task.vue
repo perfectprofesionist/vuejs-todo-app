@@ -19,7 +19,6 @@
                         class="editable-task" 
                         v-focus 
                         @keyup.esc="undo" 
-                        
                         @keyup.enter="updateTask" 
                         v-model="editingTask"
                     />
@@ -29,7 +28,7 @@
             </div>
 
             <!-- Display task date -->
-            <div class="task-date">{{ task.updated_at }}</div>
+            <div class="task-date">{{ task.created_at }}</div>
         </div>
 
         <TaskActions 
