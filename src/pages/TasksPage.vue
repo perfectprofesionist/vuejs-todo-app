@@ -40,10 +40,17 @@
 <script setup>
     // Import necessary functions from Vue
     import { computed, onMounted, ref } from "vue";
+    import { useTaskStore } from "../stores/task";
     // Import the task API and the Tasks component
     import { allTasks, createTask, updateTask, completeTask, removeTask } from '@/http/task-api';
     import Tasks from "../components/tasks/Tasks.vue"
     import NewTask from "../components/tasks/NewTask.vue"
+
+
+    const store = useTaskStore()
+
+    store.task.name = "First task updated"
+    store.task.is_completed = true
 
     // Define a reactive variable for storing tasks
     const tasks = ref([])
@@ -52,6 +59,7 @@
     onMounted ( async () => {
         const { data } = await allTasks();
         tasks.value = data.data
+        console.log(store.task)
     })
 
     // Compute uncompleted tasks by filtering tasks where is_completed is false
