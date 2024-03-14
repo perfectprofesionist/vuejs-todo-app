@@ -10,7 +10,7 @@
                 :key="task.id" 
                 :task="task" 
                 @updated=" $event => $emit('updated', $event)" 
-            
+                @completed=" $event => $emit('completed', $event)" 
             />   
         </ul>
     </div>

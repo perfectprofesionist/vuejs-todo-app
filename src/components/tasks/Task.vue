@@ -4,7 +4,12 @@
         <!-- Container for task content and actions -->
         <div class="d-flex justify-content-start align-items-center">
             <!-- Checkbox for task completion status -->
-            <input class="form-check-input mt-0 completed" :class="completedTasksClass" type="checkbox" :checked="task.is_completed"/>
+            <input class="form-check-input mt-0 completed" 
+                type="checkbox"
+                :class="completedTasksClass"  
+                :checked="task.is_completed"
+                @change="markeTaskAsCompleted"
+            />
             
             <!-- Container for task name and edit/remove options -->
             <div class="ms-2 flex-grow-1 " :class="completedTasksClass" title="Double click the text to edit or remove"  @dblclick="$event => isEdit = true" >
@@ -42,7 +47,8 @@
     })
 
     const emit = defineEmits([
-        "updated"
+        "updated",
+        "completed"
     ])
 
     const isEdit = ref(false)
@@ -66,4 +72,15 @@
         isEdit.value = false
         editingTask.value = props.task.name
     }
+
+
+    const markeTaskAsCompleted = event => {
+        const updatedTask = {
+            ...props.task, 
+            is_completed: !props.task.is_completed
+        }
+        
+        emit('completed', updatedTask)
+    }
+
 </script>
