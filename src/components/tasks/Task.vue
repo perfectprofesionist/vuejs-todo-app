@@ -9,7 +9,7 @@
             <!-- Container for task name and edit/remove options -->
             <div class="ms-2 flex-grow-1 " :class="completedTasksClass" title="Double click the text to edit or remove"  @dblclick="$event => isEdit = true" >
                 <div class="relative" v-if="isEdit">
-                    <input type="text" class="editable-task" @keyup.esc="$event => isEdit = false" v-focus/>
+                    <input type="text" class="editable-task" @keyup.esc="$event => isEdit = false" v-focus @keyup.enter="updateTask" />
                 </div>
                 <!-- Task name display section -->
                 <span v-else>{{ task.name }}</span>
@@ -33,11 +33,24 @@
         task: Object
     })
 
+    const emit = defineEmits([
+        "updated"
+    ])
+
     const isEdit = ref(false)
     // Compute the class for completed tasks based on the is_completed property
     const completedTasksClass = computed(() =>  props.task.is_completed? "completed" : "")
 
     const vFocus = {
         mounted: (el) => el.focus()
+    }
+
+    const updateTask = event => {
+        const updatedTask = {
+            ...props.task, 
+            name: event.target.value
+        }
+        isEdit.value = false
+        emit('updated', updatedTask)
     }
 </script>

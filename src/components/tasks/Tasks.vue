@@ -4,7 +4,14 @@
         <!-- List of tasks -->
         <ul class="list-group list-group-flush">
             <!-- Render each task using the Task component -->
-            <Task v-for="task in tasks" :key="task.id" :task="task" />   
+            <Task 
+            
+                v-for="task in tasks" 
+                :key="task.id" 
+                :task="task" 
+                @updated=" $event => $emit('updated', $event)" 
+            
+            />   
         </ul>
     </div>
 </template>
