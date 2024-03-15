@@ -15,12 +15,13 @@
 
 <script setup>
 
-// Import Icon components for edit and delete actions
-    import IconTrash from '../icons/IconTrash.vue';
-    import IconPencil from '../icons/IconPencil.vue';
+    // Import Icon components for edit and delete actions
+    import IconTrash from '../icons/IconTrash.vue'; // Importing the IconTrash component
+    import IconPencil from '../icons/IconPencil.vue'; // Importing the IconPencil component
 
+    // Defining custom events using defineEmits
     const emit = defineEmits([
-        "edit",
-        "remove"
-    ])
+        "edit", // Custom event for triggering an edit action
+        "remove" // Custom event for triggering a remove action
+    ]);
 </script>

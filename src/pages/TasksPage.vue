@@ -28,27 +28,39 @@
     </main>
 </template>
 <script setup>
-import { computed, onMounted, ref } from "vue";
-import { storeToRefs } from "pinia";
-import { useTaskStore } from "../stores/task";
+import { computed, onMounted, ref } from "vue"; // Importing necessary functions from Vue
+import { storeToRefs } from "pinia"; // Importing a utility function from Pinia
+import { useTaskStore } from "../stores/task"; // Importing the task store
 
-import Tasks from "../components/tasks/Tasks.vue";
-import NewTask from "../components/tasks/NewTask.vue";
-const store = useTaskStore()
-const { completedTasks, uncompletedTasks } = storeToRefs(store)
-const { fetchAllTasks } = store
+import Tasks from "../components/tasks/Tasks.vue"; // Importing the Tasks component
+import NewTask from "../components/tasks/NewTask.vue"; // Importing the NewTask component
 
+// Accessing the task store
+const store = useTaskStore();
+
+// Extracting reactive references from the store
+const { completedTasks, uncompletedTasks } = storeToRefs(store);
+
+// Destructuring and accessing the fetchAllTasks function from the store
+const { fetchAllTasks } = store;
+
+// Function executed after component is mounted
 onMounted(async () => {
-    await fetchAllTasks()
-})
+    await fetchAllTasks(); // Fetching all tasks after component is mounted
+});
+
+// Computed property to determine whether to show the "Toggle Completed" button
 const showToggleCompletedBtn = computed(
     () => uncompletedTasks.value.length > 0 && completedTasks.value.length > 0
-)
+);
+
+// Computed property to determine whether completed tasks should be visible
 const completedTasksIsVisible = computed(
     () => uncompletedTasks.value.length === 0 || completedTasks.value.length > 0
-)
-const showCompletedTasks = ref(false)
+);
 
+// Reference to control the visibility of completed tasks
+const showCompletedTasks = ref(false);
 
 </script>
 
