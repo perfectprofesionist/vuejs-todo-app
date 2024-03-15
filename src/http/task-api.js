@@ -1,8 +1,10 @@
 // Import the pre-configured Axios instance from the "api" module
 import api from "./api";
 
+const apiPath = import.meta.env.VITE_API_PATH
+
 // Define the API resource endpoint for tasks
-const resource = "/tasks";
+const resource = apiPath + "/tasks";
 
 // Function to fetch all tasks from the API
 export const allTasks = () => api.get(resource);
