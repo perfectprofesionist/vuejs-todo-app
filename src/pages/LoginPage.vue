@@ -1,7 +1,9 @@
 <template>
-    <h1>Login</h1>
+    <main style="min-height: 50vh; margin-top: 2rem;">
+          <h1>Login</h1>
 
-    <button class="btn btn-primary" @click="handleClick">Login</button>
+          <button class="btn btn-primary" @click="handleClick">Login</button>
+   </main>
 </template>
 
 <script setup>

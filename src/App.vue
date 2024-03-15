@@ -10,8 +10,11 @@ import Footer from './components/Footer.vue';
         <!-- Include the Navbar component -->
         <Navbar />
 
-        <router-view />
-
+        <router-view v-slot="{ Component }">
+            <transition name="fade" mode="out-in">
+              <component :is="Component" />
+            </transition>
+        </router-view>
         <!-- Include the TasksPage component -->
         <TasksPage />
 
