@@ -15,9 +15,29 @@ export const useAuthStore =  defineStore("authStore", () =>  {
 
     const handleLogin = async (credentials) => {
         await csrfCookie()
-        await login(credentials)
+        const headers = {
+            'X-XSRF-TOKEN': getCSRFTokenFromCookie(), // Replace getCSRFTokenFromCookie() with a function that retrieves the CSRF token from the cookie
+            'Content-Type': 'application/json' // Add other headers as needed
+        };
+        await login(credentials, headers)
         await fetchUser()
 
+    }
+
+
+    const getCSRFTokenFromCookie = () => {
+        // Split cookies by semicolon and trim each cookie
+        const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+        
+        // Find the cookie you're interested in
+        const myCookie = cookies.find(cookie => cookie.startsWith('XSRF-TOKEN='));
+  
+        // If the cookie is found, extract its value
+        if (myCookie) {
+            console.log(myCookie)
+          // Extract value from the cookie
+          return decodeURIComponent(myCookie.split('=')[1]);
+        }
     }
 
     const handleRegister = async (newUser) => {
