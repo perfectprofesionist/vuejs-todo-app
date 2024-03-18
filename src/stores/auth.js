@@ -8,8 +8,14 @@ export const useAuthStore =  defineStore("authStore", () =>  {
     const isLoggedIn = computed( () => !!user.value)
 
     const fetchUser = async () => {
-        const { data } =  await getUser()
-        user.value = data
+        try{
+            const { data } =  await getUser()
+            user.value = data
+
+        } catch(error) {
+            user.value = null
+        }
+        
     }
 
 
@@ -34,7 +40,6 @@ export const useAuthStore =  defineStore("authStore", () =>  {
   
         // If the cookie is found, extract its value
         if (myCookie) {
-            console.log(myCookie)
           // Extract value from the cookie
           return decodeURIComponent(myCookie.split('=')[1]);
         }

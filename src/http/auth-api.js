@@ -4,3 +4,4 @@ export const login = (credentials, headers) => api.post('/auth/login', credentia
 export const register = (user) => api.post('/auth/register', user);
 export const logout = () => api.post('/auth/logout');
 export const getUser = () => api.get('/api/user');
+
