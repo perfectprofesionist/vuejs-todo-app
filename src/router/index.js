@@ -2,6 +2,8 @@ import { createRouter, createWebHistory  } from "vue-router";
 
 import  routes   from './routes'
 
+import { useAuthStore } from "../stores/auth"
+
 const router =  createRouter({
     routes,
     history: createWebHistory(),
@@ -9,8 +11,8 @@ const router =  createRouter({
 })
 
 router.beforeEach((to, from) => {
-    console.log('Global before each', to, from)
-    if (to.meta.auth) {
+    const store = useAuthStore()
+    if (to.meta.auth && !store.isLoggedIn) {
         return  {
             name: "login",
             query: {
