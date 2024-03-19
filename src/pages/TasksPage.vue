@@ -51,7 +51,8 @@ onMounted(async () => {
 
 // Computed property to determine whether to show the "Toggle Completed" button
 const showToggleCompletedBtn = computed(
-    () => uncompletedTasks.value.length > 0 && completedTasks.value.length > 0
+    //() => uncompletedTasks.value.length > 0 && completedTasks.value.length > 0
+    () => completedTasks.value.length > 0
 );
 
 // Computed property to determine whether completed tasks should be visible
@@ -60,7 +61,7 @@ const completedTasksIsVisible = computed(
 );
 
 // Reference to control the visibility of completed tasks
-const showCompletedTasks = ref(false);
+const showCompletedTasks = ref(false );
 
 </script>
 

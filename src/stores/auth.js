@@ -22,9 +22,13 @@ export const useAuthStore =  defineStore("authStore", () =>  {
     }
 
 
-    const handleLogin = async (credentials) => {
-        await csrfCookie()
+    const handleLogin = async (credentials, csrf=true) => {
+        
+        
         try {
+            if(csrf) {
+                await csrfCookie()
+            }
             const headers = {
                 'X-XSRF-TOKEN': getCSRFTokenFromCookie(), // Replace getCSRFTokenFromCookie() with a function that retrieves the CSRF token from the cookie
                 'Content-Type': 'application/json' // Add other headers as needed
@@ -44,11 +48,23 @@ export const useAuthStore =  defineStore("authStore", () =>  {
     
 
     const handleRegister = async (newUser) => {
-        await register (newUser)
-        await handleLogin( {
-            email: newUser.email,
-            password: newUser.password
-        })
+        
+        try {
+            await csrfCookie()
+            const headers = {
+                'X-XSRF-TOKEN': getCSRFTokenFromCookie(), // Replace getCSRFTokenFromCookie() with a function that retrieves the CSRF token from the cookie
+                'Content-Type': 'application/json' // Add other headers as needed
+            };
+            await register (newUser, headers)
+            await handleLogin( {
+                email: newUser.email,
+                password: newUser.password
+            }, false)
+        } catch (error) {
+            if(error.response && error.response.status === 422) {
+                errors.value = error.response.data.errors
+            }
+        }
     }
 
     const handleLogout = async () => {

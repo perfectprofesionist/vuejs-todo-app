@@ -1,6 +1,7 @@
 import { ref, reactive, computed } from "vue";
 import { defineStore } from "pinia";
 import { allTasks, createTask, updateTask, completeTask, removeTask } from "../http/task-api";
+import { createAuthHeaders} from "../http/get-csrf"
 
 // Define a Pinia store called 'taskStore'
 export const useTaskStore = defineStore("taskStore", () => {
@@ -21,31 +22,35 @@ export const useTaskStore = defineStore("taskStore", () => {
 
   // Function to handle adding a new task
   const handleAddedTask = async (newTask) => {
-    const { data: createdTask } = await createTask(newTask)
+    const headers = createAuthHeaders();
+    const { data: createdTask } = await createTask(newTask, headers)
     tasks.value.unshift(createdTask.data)
   }
 
   // Function to handle updating a task
   const handleUpdatedTask = async (task) => {
+    const headers = createAuthHeaders();
     const { data: updatedTask } = await updateTask(task.id, {
         name: task.name
-    })
+    }, headers)
     const currentTask = tasks.value.find(item => item.id === task.id)
     currentTask.name = updatedTask.data.name
   }
 
   // Function to handle marking a task as completed
   const handleCompletedTask = async (task) => {
+    const headers = createAuthHeaders();
     const { data: updatedTask } = await completeTask(task.id, {
         is_completed: task.is_completed
-    })
+    }, headers)
     const currentTask = tasks.value.find(item => item.id === task.id)
     currentTask.is_completed = updatedTask.data.is_completed
   }
 
   // Function to handle removing a task
   const handleRemovedTask = async (task) => {
-    await removeTask(task.id)
+    const headers = createAuthHeaders();
+    await removeTask(task.id, headers)
     const index = tasks.value.findIndex(item => item.id === task.id)
     tasks.value.splice(index, 1)
   }

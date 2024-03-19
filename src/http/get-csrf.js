@@ -11,3 +11,11 @@ export const getCSRFTokenFromCookie = () => {
       return decodeURIComponent(myCookie.split('=')[1]);
     }
 }
+
+export const createAuthHeaders = () => {
+  const headers = {
+      'X-XSRF-TOKEN': getCSRFTokenFromCookie(), // Replace getCSRFTokenFromCookie() with a function that retrieves the CSRF token from the cookie
+      'Content-Type': 'application/json' // Add other headers as needed
+  }
+  return headers;
+}

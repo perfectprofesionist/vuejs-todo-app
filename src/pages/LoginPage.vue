@@ -1,10 +1,7 @@
 <template>
 <main class="auth-wrapper">
     <form class="auth-form" @submit.prevent="handleSubmit">
-        <h1>
-            <span>To Do </span>
-            <strong>List</strong>
-        </h1>
+        
         <h2 class="h3 mb-4 fw-normal">Please sign in</h2>
         
         <div class="form-floating mb-2">
@@ -21,8 +18,10 @@
                 {{ errors.password[0] }}
             </div>
         </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        <button class="w-100 btn btn-lg btn-secondary" type="submit">Sign in</button>
+        <router-link :to="{name:'register'}" class=" ms-2">Register</router-link>
     </form>
+    
 </main>
 </template>
 <script setup>

@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
         <div class="container py-2">
             <router-link :to="{name:'home'}" class="navbar-brand">
-                <span>To Do</span>
+                <span>To Do </span>
                 <strong>List</strong>
             </router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -14,18 +14,18 @@
                     <li class="nav-item">
                         <router-link :to="{name:'tasks'}" class="nav-link">Tasks</router-link>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <router-link :to="{name:'summary'}" class="nav-link">Summary</router-link>
-                    </li>
+                    </li> -->
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <template v-if="!store.isLoggedIn">
                 
                         <li class="nav-item">
-                            <router-link :to="{name:'login'}" class="btn btn-outline-secondary ms-2">Login</router-link>
+                            <router-link :to="{name:'login'}" class="btn btn-outline-secondary  btn-sm ms-2">Login</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="{name:'register'}" class="btn btn-danger ms-2">Register</router-link>
+                            <router-link :to="{name:'register'}" class="btn btn-secondary btn-sm ms-2">Register</router-link>
                             
                         </li>
                     </template>

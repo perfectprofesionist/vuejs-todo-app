@@ -10,13 +10,13 @@ const resource = apiPath + "/tasks";
 export const allTasks = () => api.get(resource);
 
 // Function to create a new task via API
-export const createTask = (task) => api.post(resource, task);
+export const createTask = (task, headers) => api.post(resource, task, { headers });
 
 // Function to update an existing task via API
-export const updateTask = (id, task) => api.put(`${resource}/${id}`, task);
+export const updateTask = (id, task, headers) => api.put(`${resource}/${id}`, task, {headers});
 
 // Function to remove a task by its ID via API
-export const removeTask = (id) => api.delete(`${resource}/${id}`);
+export const removeTask = (id, headers) => api.delete(`${resource}/${id}`, {headers});
 
 // Function to mark a task as complete by its ID via API
-export const completeTask = (id, task) => api.patch(`${resource}/${id}/complete`, task);
+export const completeTask = (id, task, headers) => api.patch(`${resource}/${id}/complete`, task, {headers});
