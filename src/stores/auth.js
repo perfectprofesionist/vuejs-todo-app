@@ -6,6 +6,8 @@ import { getCSRFTokenFromCookie} from "../http/get-csrf"
 export const useAuthStore =  defineStore("authStore", () =>  {
     const user = ref(null)
 
+    const errors = ref({})
+
     const isLoggedIn = computed( () => !!user.value)
 
     const fetchUser = async () => {
@@ -22,12 +24,19 @@ export const useAuthStore =  defineStore("authStore", () =>  {
 
     const handleLogin = async (credentials) => {
         await csrfCookie()
-        const headers = {
-            'X-XSRF-TOKEN': getCSRFTokenFromCookie(), // Replace getCSRFTokenFromCookie() with a function that retrieves the CSRF token from the cookie
-            'Content-Type': 'application/json' // Add other headers as needed
-        };
-        await login(credentials, headers)
-        await fetchUser()
+        try {
+            const headers = {
+                'X-XSRF-TOKEN': getCSRFTokenFromCookie(), // Replace getCSRFTokenFromCookie() with a function that retrieves the CSRF token from the cookie
+                'Content-Type': 'application/json' // Add other headers as needed
+            };
+            await login(credentials, headers)
+            await fetchUser()
+        } catch (error) {
+            if(error.response && error.response.status === 422) {
+                errors.value = error.response.data.errors
+            }
+        }
+        
 
     }
 
@@ -57,6 +66,7 @@ export const useAuthStore =  defineStore("authStore", () =>  {
         fetchUser,
         handleLogin,
         handleRegister,
-        handleLogout
+        handleLogout,
+        errors
     }
 });

@@ -6,13 +6,20 @@
             <strong>List</strong>
         </h1>
         <h2 class="h3 mb-4 fw-normal">Please sign in</h2>
+        
         <div class="form-floating mb-2">
-            <input type="email" class="form-control" id="email" v-model="form.email" placeholder="name@example.com" />
+            <input type="email" class="form-control"  :class="{ 'is-invalid': errors.email &&  errors.email[0]}" id="email" v-model="form.email" placeholder="name@example.com" />
             <label for="email">Email</label>
+            <div class="invalid-feedback" v-if="errors.email &&  errors.email[0]">
+                {{ errors.email[0] }}
+            </div>
         </div>
         <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="password" v-model="form.password" placeholder="Password" />
+            <input type="password" class="form-control" :class="{ 'is-invalid': errors.password &&  errors.password[0]}" id="password" v-model="form.password" placeholder="Password" />
             <label for="password">Password</label>
+            <div class="invalid-feedback" v-if="errors.password &&  errors.password[0]">
+                {{ errors.password[0] }}
+            </div>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
     </form>
@@ -20,18 +27,25 @@
 </template>
 <script setup>
 import { reactive } from "vue";
+import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 const router = useRouter()
 const store = useAuthStore()
+const { isLoggedIn, errors } = storeToRefs(store)
+
+const { handleLogin } = store
 const form = reactive({
 email: '',
 password: '' 
 })
 
 const handleSubmit = async () => {
-    await store.handleLogin(form)
-    router.push({ name: 'tasks' })
+    await handleLogin(form)
+    if(isLoggedIn.value) {
+        router.push({ name: 'tasks' })
+    }
+   
 }
 
 </script>
