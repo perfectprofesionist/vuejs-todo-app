@@ -30,7 +30,7 @@
                 <label for="password_confirmation">Password Confirmation</label>
             </div>
             <button class="w-100 btn btn-lg btn-secondary " type="submit">Register</button>
-            <router-link :to="{name:'login'}" class=" ms-2">Sign In</router-link>
+            <div class="form-floating mb-3 mt-4"><router-link :to="{name:'login'}" class=" ms-2">Sign In</router-link></div>
         </form>
     </main>
 </template>

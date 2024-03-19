@@ -19,7 +19,8 @@
             </div>
         </div>
         <button class="w-100 btn btn-lg btn-secondary" type="submit">Sign in</button>
-        <router-link :to="{name:'register'}" class=" ms-2">Register</router-link>
+        <div class="form-floating mb-3 mt-4"><router-link :to="{name:'register'}" class=" ms-2">Register</router-link></div>
+        
     </form>
     
 </main>
